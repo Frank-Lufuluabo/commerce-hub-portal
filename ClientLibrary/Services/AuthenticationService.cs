@@ -1,0 +1,57 @@
+﻿using ClientLibrary.Helper;
+using ClientLibrary.Models;
+using ClientLibrary.Models.Authentication;
+using System.Web;
+namespace ClientLibrary.Services
+{
+    public class AuthenticationService(IHttpClientHelper httpClient, IApiCallHelper apiHelper) : IAuthenticationService
+    {
+        public async Task<ServiceResponse> CreateUser(CreateUser user)
+        {
+            var client = await httpClient.GetPrivateClientAsync();
+            var apiCall = new ApiCall
+            {
+                Route = Constant.Authentication.Register,
+                Type = Constant.ApiCallType.Post,
+                Client = client,
+                Id = null!,
+                Model = user
+            };
+            var result = await apiHelper.ApiCallTypeCall<CreateUser>(apiCall);
+            return result == null ? apiHelper.ConnectionError() :
+            await apiHelper.GetServiceResponse<ServiceResponse>(result);
+        }
+
+        public async Task<LoginReponse> LoginUser(CreateUser user)
+        {
+            var client = await httpClient.GetPrivateClientAsync();
+            var apiCall = new ApiCall
+            {
+                Route = Constant.Authentication.Login,
+                Type = Constant.ApiCallType.Post,
+                Client = client,
+                Id = null!,
+                Model = user
+            };
+            var result = await apiHelper.ApiCallTypeCall<CreateUser>(apiCall);
+            return result == null ? new LoginReponse(Message: apiHelper.ConnectionError().Message) :
+            await apiHelper.GetServiceResponse<LoginReponse>(result);
+        }
+
+        public async Task<LoginReponse> ReviveToken(string refreshToken)
+        {
+            var client = httpClient.GetPublicClient();
+            var apiCall = new ApiCall
+            {
+                Route = Constant.Authentication.ReviveToken,
+                Type = Constant.ApiCallType.Get,
+                Client = client,
+                Model = null!,
+                Id = HttpUtility.UrlEncode(refreshToken)
+            };
+            var result = await apiHelper.ApiCallTypeCall<Dummy>(apiCall);
+            return result == null ? null! :
+                 await apiHelper.GetServiceResponse<LoginReponse>(result);
+        }
+    }
+}
