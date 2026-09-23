@@ -22,7 +22,7 @@ namespace ClientLibrary.Services
             await apiHelper.GetServiceResponse<ServiceResponse>(result);
         }
 
-        public async Task<LoginReponse> LoginUser(CreateUser user)
+        public async Task<LoginResponse> LoginUser(CreateUser user)
         {
             var client = await httpClient.GetPrivateClientAsync();
             var apiCall = new ApiCall
@@ -34,11 +34,11 @@ namespace ClientLibrary.Services
                 Model = user
             };
             var result = await apiHelper.ApiCallTypeCall<CreateUser>(apiCall);
-            return result == null ? new LoginReponse(Message: apiHelper.ConnectionError().Message) :
-            await apiHelper.GetServiceResponse<LoginReponse>(result);
+            return result == null ? new LoginResponse(Message: apiHelper.ConnectionError().Message) :
+            await apiHelper.GetServiceResponse<LoginResponse>(result);
         }
 
-        public async Task<LoginReponse> ReviveToken(string refreshToken)
+        public async Task<LoginResponse> ReviveToken(string refreshToken)
         {
             var client = httpClient.GetPublicClient();
             var apiCall = new ApiCall
@@ -51,7 +51,7 @@ namespace ClientLibrary.Services
             };
             var result = await apiHelper.ApiCallTypeCall<Dummy>(apiCall);
             return result == null ? null! :
-                 await apiHelper.GetServiceResponse<LoginReponse>(result);
+                 await apiHelper.GetServiceResponse<LoginResponse>(result);
         }
     }
 }
