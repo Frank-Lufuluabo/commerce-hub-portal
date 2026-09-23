@@ -1,0 +1,91 @@
+# ============================================================
+# Git attributes
+# ============================================================
+
+# Automatically detect text files
+* text=auto
+
+
+# ============================================================
+# .NET / C#
+# ============================================================
+
+*.cs text
+*.csproj text
+*.fs text
+*.fsproj text
+*.vb text
+*.vbproj text
+
+*.sln text
+*.slnx text
+
+*.props text
+*.targets text
+*.json text
+*.xml text
+*.config text
+*.resx text
+
+
+# ============================================================
+# Blazor / Web
+# ============================================================
+
+*.razor text
+*.cshtml text
+*.html text
+*.css text
+*.scss text
+*.js text
+*.ts text
+
+*.svg text
+*.md text
+*.txt text
+
+
+# ============================================================
+# Line endings
+# ============================================================
+
+*.sh text eol=lf
+*.bash text eol=lf
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+
+# ============================================================
+# Binary files
+# ============================================================
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.bmp binary
+*.avif binary
+
+*.pdf binary
+
+*.zip binary
+*.7z binary
+*.rar binary
+*.gz binary
+
+*.dll binary
+*.exe binary
+
+
+# ============================================================
+# Fonts
+# ============================================================
+
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
