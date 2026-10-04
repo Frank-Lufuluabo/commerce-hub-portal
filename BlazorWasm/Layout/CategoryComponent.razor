@@ -1,0 +1,10 @@
+﻿@using ClientLibrary.Models.Category
+<h3>CategoryComponent</h3>
+
+@code {
+    IEnumerable<GetCategory> Categories = [];
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await categoryService.GetAllAsync();
+    }
+}
