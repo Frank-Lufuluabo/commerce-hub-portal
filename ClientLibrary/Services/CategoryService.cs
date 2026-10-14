@@ -92,7 +92,7 @@ namespace ClientLibrary.Services
         }
 
         // public
-        public async Task<IEnumerable<GetProduct>> GetProductByCategory(Guid categoryId)
+        public async Task<IEnumerable<GetProduct>> GetProductsByCategory(Guid categoryId)
         {
             var client = httpClient.GetPublicClient();
             var apiCall = new ApiCall
