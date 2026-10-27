@@ -25,5 +25,7 @@ builder.Services.AddHttpClient(Constant.ApiClient.Name, option =>
 }).AddHttpMessageHandler<RefreshTokenHandler>();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthorizationCore();
-
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IPaymentMethodService, PaymentMethodService>();
+builder.Services.AddVirtualizationService();
 await builder.Build().RunAsync();
