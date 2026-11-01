@@ -1,4 +1,5 @@
-﻿<div class="fashion_section container-fluid">
+﻿@implements IAsyncDisposable
+<div class="fashion_section container-fluid">
     <div id="main_slider" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             @if (ProductGroups.Any())
@@ -20,7 +21,7 @@
                                                 <p class="price_text">Price <span style="color: #262626;">$ @product.Price</span></p>
                                                 <div class="tshirt_img"><img src="@product.Base64Image"></div>
                                                 <div class="btn_main">
-                                                    <div class="buy_bt"><a href="#"><i class="fa fa-cart-plus" aria-hidden="true"></i>Add to Cart</a></div>
+                                                    <div class="buy_bt text-danger" @onclick="()=>AddItemToCart(product.Id)"><a href="#"><i class="fa fa-cart-plus" aria-hidden="true"></i>Add to Cart</a></div>
                                                     <div class="seemore_bt"><a href="#">See More</a></div>
                                                 </div>
                                             </div>
@@ -46,10 +47,17 @@
         }
     </div>
 </div>
+<NetcodeHubToast @ref="ToastComponent" 
+                 Position="@ToastPosition.Bottom()"
+                 IconClass="fa fa-check"
+                 Persist = "true"
+                 Duaration ="4000" />
 
 @code {
+    NetcodeHubToast? ToastComponent;
     IEnumerable<GetProduct> Products = [];
     List<List<GetProduct>> ProductGroups = [];
+    List<ProcessCart> MyCarts = [];
     protected async override Task OnInitializedAsync()
     {
         Products = await productService.GetAllAsync();
@@ -63,5 +71,21 @@
                 .Select(group => group.Select(x => x.product).ToList())
                 .ToList();
         }
+    }
+
+    async Task AddItemToCart(Guid productId)
+    {
+        var getCart = MyCarts.FirstOrDefault(x => x.ProductId == productId);
+        if (getCart == null)
+            MyCarts.Add(new ProcessCart { ProductId = productId, Quantity = 1 });
+        else
+            await ToastComponent!.ShowInfoToast("Cart", "Product already added to cart!");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (MyCarts.Any())
+            await browserCookieStorageService
+            .SetAsync(Constant.Cart.Name, JsonSerializer.Serialize(MyCarts), 30, "/");
     }
 }
