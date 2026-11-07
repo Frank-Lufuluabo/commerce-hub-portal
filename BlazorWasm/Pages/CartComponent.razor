@@ -1,28 +1,27 @@
 ﻿@page "/my-cart"
 <div class="conatiner">
     <div class="row">
-
     </div>
-<div/>
-<style>
-    .modalDialog{
-        min-width: 300px;
-        max-width: 500px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: fixed;
-        top: 40%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1050;
-    }
-</style>
-<NetcodeHubToast @ref="ToastComponent" 
-    Position="@ToastPosition.Bottom()"
-    IconClass="fa fa-check"
-    Persist = "true"
-    Duaration ="4000" />
+<div />
+    <style>
+            .modalDialog {
+                min-width: 300px;
+                max-width: 500px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                top: 40%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 1050;
+            }
+    </style>
+<NetcodeHubToast @ref="ToastComponent"
+                 Position="@ToastPosition.Bottom()"
+                 IconClass="fa fa-check"
+                 Persist="true"
+                 Duaration="4000" />
 @code {
     string Paying = null!;
     NetcodeHubToast? ToastConponent;
@@ -48,7 +47,7 @@
         void GetCart()
         {
             SelectedProducts?.Clear();
-            foreach(var item in MyCarts)
+            foreach (var item in MyCarts)
             {
                 var product = Products.FirstOrDefault(x => x.Id == item.ProductId);
                 if (product != null && !SelectedProducts!.Contains(product))
@@ -123,10 +122,10 @@
             if (paymentMethod == null) return;
             Paying = "Processing... please wait";
             var checkout = new Checkout
-                {
-                    PaymentMethodId = paymentMethod.Id,
-                    Carts = MyCarts
-                };
+            {
+                PaymentMethodId = paymentMethod.Id,
+                Carts = MyCarts
+            };
             var (success, paymentLink) = await cartService.Checkout(checkout);
             if (success)
             {
@@ -138,8 +137,7 @@
                 await ToastConponent!.ShowDangerToast("Checkout", paymentLink);
                 return;
             }
-
-            void Cancel() => ShowPaymentDialog = false;
         }
     }
+    void Cancel() => ShowPaymentDialog = false;
 }
